@@ -1,42 +1,76 @@
 import React, { useEffect, useRef, useState } from "react";
 import Header from "./Header";
 import { validate } from "../utils/validation";
-
+import { createUser } from "../API/createUser";
+import { loginUser } from "../API/login";
+import { useNavigate } from "react-router-dom";
+import { updateProfile } from "firebase/auth";
+import { auth } from "../utils/firebase";
+import { setUser } from "../slices/userSlice";
+import { useDispatch } from "react-redux";
 const Login = () => {
+  const navigate = useNavigate();
   const [isSignIn, setIsSignIn] = useState(false);
+  const [loading, setLoading] = useState(false);
   const emailRef = useRef(null);
   const nameRef = useRef(null);
   const passwordRef = useRef(null);
   const [error, setError] = useState("");
-  const handleSubmit = (e) => {
+  const dispatch = useDispatch();
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
-    const name = nameRef.current.value;
+    const name = nameRef.current?.value;
     console.log({ email, password, name });
+    await validate(email, password)
+      .then(() => {
+        if (isSignIn) {
+          setLoading(true);
+          createUser(email, password)
+            .then((user) => {
+              updateProfile(user, {
+                displayName: name,
+                photoURL:
+                  "https://img.freepik.com/free-vector/smiling-young-man-glasses_1308-174702.jpg?size=626&ext=jpg", // Replace with your profile picture URL
+              })
+                .then(() => {
+                  const { uid, email, displayName, photoURL } =
+                    auth.currentUser;
+                  dispatch(setUser({ uid, email, displayName, photoURL }));
+                  setLoading(false);
+                  navigate("browse");
+                })
+                .catch((error) => {
+                  setLoading(false);
+                  setError(error?.message);
+                });
+            })
+            .catch((error) => {
+              setLoading(false);
 
-    if (!isSignIn) {
-      try {
-        // Call your server-side validation function here
-        validate(email, password);
-        // If validation passes, handle the login logic
-        // For example, you can use the email and password to authenticate the user
-      } catch (error) {
-        setError(error.message);
-      }
-    } else if (name.length > 0) {
-      try {
-        // Call your server-side validation function here
-        validate(email, password);
-        // If validation passes, handle the login logic
-        // For example, you can use the email and password to authenticate the user
-      } catch (error) {
-        setError(error.message);
-      }
-    } else {
-      setError("Name is required");
-    }
+              setError(error?.message);
+            });
+        } else {
+          //login user
+          setLoading(true);
+
+          loginUser(email, password)
+            .then((user) => {
+              setLoading(false);
+              navigate("browse");
+            })
+            .catch((error) => {
+              setLoading(false);
+              setError(error?.message);
+            });
+        }
+      })
+      .catch((error) => {
+        setLoading(false);
+        setError(error?.message);
+      });
   };
   const cleanState = () => {
     emailRef.current.value = "";
@@ -94,8 +128,11 @@ const Login = () => {
             placeholder="Password"
             className="p-3 bg-gray-700 rounded text-white focus:outline-none focus:ring-2 focus:ring-red-500"
           />
-          <button className="bg-red-600 text-white py-3 rounded font-semibold hover:bg-red-700 transition duration-300">
-            {isSignIn ? "Sign Up" : "Sign In"}
+          <button
+            disabled={loading}
+            className="bg-red-600 text-white py-3 rounded font-semibold hover:bg-red-700 transition duration-300"
+          >
+            {loading ? "Loading..." : isSignIn ? "Sign Up" : "Sign In"}
           </button>
           {error && <p className="text-red-500">{error}</p>}
           <p

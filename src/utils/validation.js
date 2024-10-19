@@ -19,7 +19,7 @@ function isValidPassword(password) {
   return passwordRegex.test(password);
 }
 
-export const validate = (email, password) => {
+export const validate = async (email, password) => {
   if (!isValidEmail(email)) {
     throw new Error("Invalid email format");
   }
