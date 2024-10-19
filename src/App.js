@@ -4,8 +4,6 @@ import Body from "./components/Body";
 import store from "./store";
 
 function App() {
-  console.log("hello");
-
   return (
     <Provider store={store}>
       <Body />

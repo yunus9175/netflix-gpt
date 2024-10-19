@@ -3,13 +3,12 @@ import Header from "./Header";
 import { validate } from "../utils/validation";
 import { createUser } from "../API/createUser";
 import { loginUser } from "../API/login";
-import { useNavigate } from "react-router-dom";
 import { updateProfile } from "firebase/auth";
 import { auth } from "../utils/firebase";
 import { setUser } from "../slices/userSlice";
 import { useDispatch } from "react-redux";
+import { BackgroundImg, PhotoURL } from "../utils/constant";
 const Login = () => {
-  const navigate = useNavigate();
   const [isSignIn, setIsSignIn] = useState(false);
   const [loading, setLoading] = useState(false);
   const emailRef = useRef(null);
@@ -23,7 +22,6 @@ const Login = () => {
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
     const name = nameRef.current?.value;
-    console.log({ email, password, name });
     await validate(email, password)
       .then(() => {
         if (isSignIn) {
@@ -32,15 +30,13 @@ const Login = () => {
             .then((user) => {
               updateProfile(user, {
                 displayName: name,
-                photoURL:
-                  "https://img.freepik.com/free-vector/smiling-young-man-glasses_1308-174702.jpg?size=626&ext=jpg", // Replace with your profile picture URL
+                photoURL: PhotoURL, // Replace with your profile picture URL
               })
                 .then(() => {
                   const { uid, email, displayName, photoURL } =
                     auth.currentUser;
                   dispatch(setUser({ uid, email, displayName, photoURL }));
                   setLoading(false);
-                  navigate("browse");
                 })
                 .catch((error) => {
                   setLoading(false);
@@ -59,7 +55,6 @@ const Login = () => {
           loginUser(email, password)
             .then((user) => {
               setLoading(false);
-              navigate("browse");
             })
             .catch((error) => {
               setLoading(false);
@@ -92,7 +87,7 @@ const Login = () => {
       <Header />
       <div className="bg-cover block h-screen min-h-screen overflow-hidden absolute w-full -z-10">
         <img
-          src="https://assets.nflxext.com/ffe/siteui/vlv3/f272782d-cf96-4988-a675-6db2afd165e0/web/IN-en-20241008-TRIFECTA-perspective_b28b640f-cee0-426b-ac3a-7c000d3b41b7_small.jpg"
+          src={BackgroundImg}
           alt="bg-img"
           className="h-full w-full object-cover object-center"
         />
