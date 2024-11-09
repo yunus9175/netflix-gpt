@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
-import { fetchMovieVideos } from "../../API/fetchMovieVideos";
-import { useDispatch, useSelector } from "react-redux";
-import { setTrailerVideo } from "../../slices/moviesSlice";
+import React, { useEffect } from 'react';
+import { fetchMovieVideos } from '../../API/fetchMovieVideos';
+import { useDispatch, useSelector } from 'react-redux';
+import { setTrailerVideo } from '../../slices/moviesSlice';
 
 const VideoBackground = ({ movieId }) => {
   const dispatch = useDispatch();
@@ -10,7 +10,7 @@ const VideoBackground = ({ movieId }) => {
   useEffect(() => {
     fetchMovieVideos(movieId)
       .then((res) => {
-        const filterData = res?.filter((mov) => mov?.type === "Trailer");
+        const filterData = res?.filter((mov) => mov?.type === 'Trailer');
         const trailer = filterData.length ? filterData[0] : res[0];
         dispatch(setTrailerVideo(trailer));
       })
@@ -18,13 +18,12 @@ const VideoBackground = ({ movieId }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
-    <div className="w-screen">
+    <div className=" w-screen">
       <iframe
-        className="w-screen h-full  md:aspect-video"
-        src={`https://www.youtube.com/embed/${trailer?.key}?&autoplay=1&mute=1`}
+        className="w-screen aspect-video"
+        src={`https://www.youtube.com/embed/${trailer?.key}?&autoplay=1&mute=1&control=0`}
         title="YouTube video player"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; "
-        a
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
       ></iframe>
     </div>
   );

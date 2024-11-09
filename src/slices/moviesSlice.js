@@ -1,14 +1,15 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 // Create a slice with reducers for updating state
 
 const initialState = {
   nowPlayingMovies: [],
-  trailerVideo: null,
+  popularMovies: [],
+  trailerVideo: [],
 };
 
 const moviesSlice = createSlice({
-  name: "movies",
+  name: 'movies',
   initialState,
   reducers: {
     setMovies(state, action) {
@@ -17,10 +18,14 @@ const moviesSlice = createSlice({
     setTrailerVideo(state, action) {
       state.trailerVideo = action.payload;
     },
+    setPopularMovies: (state, action) => {
+      state.popularMovies = action.payload;
+    },
     // Add more reducers as needed
   },
 });
 
-export const { setMovies, setTrailerVideo } = moviesSlice.actions;
+export const { setMovies, setTrailerVideo, setPopularMovies } =
+  moviesSlice.actions;
 
 export default moviesSlice.reducer;

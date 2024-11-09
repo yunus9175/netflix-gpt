@@ -1,9 +1,9 @@
 import { getAPIOptions } from '../utils/constant';
 
-export const fetchLatestMovies = async () => {
+export const fetchPopularMovies = async () => {
   try {
     const response = await fetch(
-      'https://api.themoviedb.org/3/movie/now_playing?page=2',
+      'https://api.themoviedb.org/3/movie/popular?page=1',
       getAPIOptions()
     );
     if (!response.ok) {

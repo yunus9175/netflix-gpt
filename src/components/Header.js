@@ -1,11 +1,11 @@
-import { onAuthStateChanged, signOut } from "firebase/auth";
-import React, { useEffect } from "react";
-import { auth } from "../utils/firebase";
-import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { logout, setUser } from "../slices/userSlice";
-import { useDispatch } from "react-redux";
-import { LogoutIcon, netflixLogo, UserLogo } from "../utils/constant";
+import { onAuthStateChanged, signOut } from 'firebase/auth';
+import React, { useEffect } from 'react';
+import { auth } from '../utils/firebase';
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { logout, setUser } from '../slices/userSlice';
+import { useDispatch } from 'react-redux';
+import { LogoutIcon, netflixLogo, UserLogo } from '../utils/constant';
 const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -15,7 +15,7 @@ const Header = () => {
     signOut(auth)
       .then(() => {})
       .catch(() => {
-        navigate("/error");
+        navigate('/error');
       });
   };
   useEffect(() => {
@@ -23,10 +23,10 @@ const Header = () => {
       if (user) {
         const { uid, email, displayName, photoURL } = user;
         dispatch(setUser({ uid, email, displayName, photoURL }));
-        navigate("/browse");
+        navigate('/browse');
       } else {
         dispatch(logout());
-        navigate("/");
+        navigate('/');
       }
     });
     return () => unsubscribe();
