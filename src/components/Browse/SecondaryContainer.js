@@ -1,5 +1,6 @@
 import { useSelector } from 'react-redux';
 import MovieList from '../MovieList';
+import { memo } from 'react';
 
 const SecondaryContainer = () => {
   const movies = useSelector((store) => store.movies);
@@ -18,4 +19,4 @@ const SecondaryContainer = () => {
     )
   );
 };
-export default SecondaryContainer;
+export default memo(SecondaryContainer);

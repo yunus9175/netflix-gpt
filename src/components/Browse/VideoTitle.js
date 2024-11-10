@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 const VideoTitle = ({ title, overview }) => {
   return (
@@ -21,4 +21,4 @@ const VideoTitle = ({ title, overview }) => {
   );
 };
 
-export default VideoTitle;
+export default memo(VideoTitle);

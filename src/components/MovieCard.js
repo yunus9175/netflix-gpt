@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { IMG_CDN_URL } from '../utils/constant';
 
 const MovieCard = ({ posterPath }) => {
@@ -8,4 +9,4 @@ const MovieCard = ({ posterPath }) => {
     </div>
   );
 };
-export default MovieCard;
+export default memo(MovieCard);

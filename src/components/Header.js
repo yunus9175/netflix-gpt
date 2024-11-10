@@ -1,5 +1,5 @@
 import { onAuthStateChanged, signOut } from 'firebase/auth';
-import React, { useEffect } from 'react';
+import React, { memo, useEffect } from 'react';
 import { auth } from '../utils/firebase';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -77,4 +77,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default memo(Header);

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { useSelector } from 'react-redux';
 import VideoTitle from './VideoTitle';
 import VideoBackground from './VideoBackground';
@@ -19,4 +19,4 @@ const MainContainer = () => {
   );
 };
 
-export default MainContainer;
+export default memo(MainContainer);
